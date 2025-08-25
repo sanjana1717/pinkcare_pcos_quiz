@@ -3,7 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PinkCare PCOS Quiz</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "PinkCare – PCOS Quiz & Awareness",
+    "url": "https://sanjana1717.github.io/pinkcare_pcos_quiz/",
+    "description": "2-minute PCOS quiz with prevention tips and nearby doctor finder.",
+    "inLanguage": "en",
+    "publisher": {
+      "@type": "Person",
+      "name": "Sanjana"
+    }
+  }
+  </script>
+
+  <!-- Title -->
+  <title>PinkCare – PCOS Quiz & Awareness</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="PinkCare is an interactive PCOS awareness quiz that helps women understand symptoms, learn prevention tips, and find nearby doctors.">
+  <meta name="keywords" content="PCOS, Polycystic Ovary Syndrome, PCOS quiz, women's health, PCOS prevention, PCOS awareness, gynecologist, doctor finder">
+  <meta name="author" content="Sanjana">
+
+  <!-- Open Graph (for social media sharing) -->
+  <meta property="og:title" content="PinkCare – PCOS Quiz & Awareness">
+  <meta property="og:description" content="Take a quick PCOS quiz, learn about prevention, and find nearby doctors with PinkCare.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sanjana1717.github.io/pinkcare_pcos_quiz/">
+  <meta property="og:image" content="https://sanjana1717.github.io/pinkcare_pcos_quiz/preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PinkCare – PCOS Quiz & Awareness">
+  <meta name="twitter:description" content="An interactive PCOS quiz to spread awareness, give prevention tips, and help find doctors nearby.">
+  <meta name="twitter:image" content="https://sanjana1717.github.io/pinkcare_pcos_quiz/preview.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Styles & Scripts -->
   <link rel="stylesheet" href="styles.css" />
   <script src="script.js" defer></script>
 </head>
@@ -19,7 +58,7 @@
         </h1>
         <p class="lead">
           Many teens and young women aren’t aware of PCOS. Early awareness helps you act sooner.
-          Take this cute 2‑minute quiz to check your situation — then see healthy habits and nearby doctors.
+          Take this cute 2-minute quiz to check your situation — then see healthy habits and nearby doctors.
         </p>
         <button id="start-btn" class="cta jumbo">Start Quiz</button>
         <p class="disclaimer">Educational only — not medical advice.</p>
@@ -46,22 +85,6 @@
     </svg>
   </section>
 
-  <!-- Features row -->
-  <section class="features" id="features">
-    <div class="feat">
-      <h3>2‑minute quiz</h3>
-      <p>Quickly check common PCOS signs in a friendly way.</p>
-    </div>
-    <div class="feat">
-      <h3>Healthy habits</h3>
-      <p>Simple tips you can start today—food, sleep, movement.</p>
-    </div>
-    <div class="feat">
-      <h3>Private & safe</h3>
-      <p>No sign‑in. Your answers stay on your device.</p>
-    </div>
-  </section>
-
   <!-- Quiz Header (hidden until Start) -->
   <section id="quiz-header" class="results hidden">
     <div class="container">
@@ -81,6 +104,22 @@
     </div>
   </section>
 
+  <!-- Features row (moved BELOW the quiz) -->
+  <section class="features" id="features">
+    <div class="feat">
+      <h3>2-minute quiz</h3>
+      <p>Quickly check common PCOS signs in a friendly way.</p>
+    </div>
+    <div class="feat">
+      <h3>Healthy habits</h3>
+      <p>Simple tips you can start today—food, sleep, movement.</p>
+    </div>
+    <div class="feat">
+      <h3>Private & safe</h3>
+      <p>No sign-in. Your answers stay on your device.</p>
+    </div>
+  </section>
+
   <!-- Results (hidden until quiz complete) -->
   <section id="result" class="results hidden">
     <div class="container">
@@ -91,22 +130,19 @@
   </section>
 
   <!-- Find Nearby Doctors (hidden initially; revealed after results) -->
- <section id="doctor-section" class="doctor hidden">
-  <div class="container">
-    <h2>Find Nearby Doctors</h2>
-    <div class="doctor-row" style="flex-wrap:wrap;gap:10px;">
-      <input id="city" type="text" placeholder="Enter city or pincode" />
-      <button id="find-btn" class="cta">Find Doctors</button>
-      <button id="loc-btn" class="cta" type="button">Use my location</button>
+  <section id="doctor-section" class="doctor hidden">
+    <div class="container">
+      <h2>Find Nearby Doctors</h2>
+      <div class="doctor-row" style="flex-wrap:wrap;gap:10px;">
+        <input id="city" type="text" placeholder="Enter city or pincode" />
+        <button id="find-btn" class="cta">Find Doctors</button>
+        <button id="loc-btn" class="cta" type="button">Use my location</button>
+      </div>
+
+      <div id="doctor-results" style="margin-top:12px;"></div>
     </div>
-
-    <div id="doctor-results" style="margin-top:12px;"></div>
-
-    
-  </div>
-</section>
-
+  </section>
 </body>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initPlaces"></script>
 
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initPlaces"></script>
 </html>
