@@ -188,3 +188,11 @@ body{
   .hero-wrap{ grid-template-columns:1fr; }
   .quiz-card{ min-height:220px; }
 }
+.form-error { color:#e5484d; font-weight:600; margin-top:8px; }
+.shake { animation:shake .28s ease-in-out; }
+@keyframes shake {
+  0%{transform:translateX(0)} 25%{transform:translateX(-4px)}
+  50%{transform:translateX(4px)} 75%{transform:translateX(-4px)}
+  100%{transform:translateX(0)}
+}
+

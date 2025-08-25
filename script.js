@@ -55,19 +55,32 @@ let answers = new Array(QUESTIONS.length).fill(null);
 
 const $ = (id) => document.getElementById(id);
 
-const quizArea     = $("quiz-area");
-const prevBtn      = $("prev-btn");
-const nextBtn      = $("next-btn");
-const resultBox    = $("result");
-const resultText   = $("result-text");
-const resultAdvice = $("result-advice");
-const doctorSection= $("doctor-section");
+const quizArea      = $("quiz-area");
+const prevBtn       = $("prev-btn");
+const nextBtn       = $("next-btn");
+const resultBox     = $("result");
+const resultText    = $("result-text");
+const resultAdvice  = $("result-advice");
+const doctorSection = $("doctor-section");
+const errorEl       = $("quiz-error"); // <-- inline error paragraph
 
 // Optional landing → quiz elements (hide landing, show quiz)
-const startBtn     = $("start-btn");
-const landing      = $("landing");
-const quizHeader   = $("quiz-header");
-const quiz         = $("quiz");
+const startBtn   = $("start-btn");
+const landing    = $("landing");
+const quizHeader = $("quiz-header");
+const quiz       = $("quiz");
+
+// ---- Inline error helpers ----
+function showError(msg) {
+  if (!errorEl) return;
+  errorEl.textContent = msg || "Please select an option to continue.";
+  errorEl.classList.remove("hidden");
+  nextBtn?.classList.add("shake");
+  setTimeout(() => nextBtn?.classList.remove("shake"), 300);
+}
+function hideError() {
+  errorEl?.classList.add("hidden");
+}
 
 // Render a question
 function renderQuestion(){
@@ -98,14 +111,25 @@ function renderQuestion(){
     optsWrap.appendChild(label);
   });
 
+  // hide any previous error on new question render
+  hideError();
+
+  // as soon as user picks anything, clear the error (once per question)
+  quizArea.addEventListener("change", (e) => {
+    if (e.target && e.target.matches('input[type="radio"][name="opt"]')) hideError();
+  }, { once: true });
+
   prevBtn.disabled = current === 0;
   nextBtn.textContent = current === QUESTIONS.length-1 ? "See Result" : "Next";
 }
 
 // Next/Prev handlers
 function handleNext(){
-  const sel = document.querySelector("input[name=opt]:checked");
-  if(!sel){ alert("Please choose an option"); return; }
+  const sel = document.querySelector('input[name="opt"]:checked');
+  if(!sel){
+    showError("Please select an option to continue.");
+    return;
+  }
   answers[current] = sel.value;
 
   if(current < QUESTIONS.length-1){
@@ -153,45 +177,28 @@ function showResult(){
     resultAdvice.appendChild(s);
   });
 
-  // Make result visible (override any inline styles)
   resultBox.classList.remove("hidden");
   resultBox.style.display = "block";
 
-  // Show doctors only after results
-  if (doctorSection) doctorSection.classList.remove("hidden"), doctorSection.style.display = "block";
+  if (doctorSection) {
+    doctorSection.classList.remove("hidden");
+    doctorSection.style.display = "block";
+  }
 
   resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-// Doctor search demo (Nominatim)
 // -------------- Keyless Maps Launcher --------------
-
-// Build provider URLs
 function buildProviderLinks({ lat, lon, text }) {
   const q = text ? `gynecologist in ${text}` : "gynecologist near me";
   const links = [];
 
   if (lat != null && lon != null) {
-    // Bias to coordinates when we have them
-    links.push({
-      label: "Open in Google Maps",
-      href: `https://www.google.com/maps/search/gynecologist/@${lat},${lon},14z`
-    });
-    links.push({
-      label: "Open in Bing Maps",
-      href: `https://www.bing.com/maps?q=gynecologist&cp=${lat}~${lon}&lvl=14`
-    });
-    links.push({
-      label: "Open in OpenStreetMap",
-      href: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=14/${lat}/${lon}&layers=CN`
-    });
-    // Apple Maps (best on iOS/macOS)
-    links.push({
-      label: "Open in Apple Maps",
-      href: `https://maps.apple.com/?q=gynecologist&sll=${lat},${lon}&z=14`
-    });
+    links.push({ label: "Open in Google Maps", href: `https://www.google.com/maps/search/gynecologist/@${lat},${lon},14z` });
+    links.push({ label: "Open in Bing Maps", href: `https://www.bing.com/maps?q=gynecologist&cp=${lat}~${lon}&lvl=14` });
+    links.push({ label: "Open in OpenStreetMap", href: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=14/${lat}/${lon}&layers=CN` });
+    links.push({ label: "Open in Apple Maps", href: `https://maps.apple.com/?q=gynecologist&sll=${lat},${lon}&z=14` });
   } else {
-    // Text-only search
     const encoded = encodeURIComponent(q);
     links.push({ label: "Open in Google Maps", href: `https://www.google.com/maps/search/${encoded}` });
     links.push({ label: "Open in Bing Maps",   href: `https://www.bing.com/maps?q=${encoded}` });
@@ -202,7 +209,6 @@ function buildProviderLinks({ lat, lon, text }) {
   return links;
 }
 
-// Render simple cards with “Open in …” buttons
 function renderLinks(links, container) {
   container.innerHTML = "";
   links.forEach(l => {
@@ -221,7 +227,7 @@ function renderLinks(links, container) {
   });
 }
 
-// City/pincode flow: just open links with text
+// City/pincode flow
 async function findDoctors() {
   const cityInput = document.getElementById("city");
   const container = document.getElementById("doctor-results");
@@ -233,15 +239,12 @@ async function findDoctors() {
     return;
   }
 
-  // Build links for text query
   const links = buildProviderLinks({ text });
   renderLinks(links, container);
-
-  // Bonus: also auto-open Google Maps in a new tab for convenience
   window.open(links[0].href, "_blank", "noopener");
 }
 
-// Geolocation flow: get coordinates and open links
+// Geolocation flow
 function useMyLocation() {
   const container = document.getElementById("doctor-results");
   container.innerHTML = "<p>Getting your location…</p>";
@@ -256,7 +259,6 @@ function useMyLocation() {
       const { latitude: lat, longitude: lon } = pos.coords;
       const links = buildProviderLinks({ lat, lon });
       renderLinks(links, container);
-      // Auto-open Google Maps centered on you
       window.open(links[0].href, "_blank", "noopener");
     },
     (err) => {
@@ -285,8 +287,6 @@ function useMyLocation() {
   }
 })();
 
-
-
 // Landing → Start Quiz
 function wireStart(){
   if (!startBtn) return;
@@ -303,6 +303,8 @@ function wireStart(){
     // Hide previous result & doctor section if any
     if (resultBox){ resultBox.classList.add("hidden"); resultBox.style.display = "none"; }
     if (doctorSection){ doctorSection.classList.add("hidden"); doctorSection.style.display = "none"; }
+
+    hideError();
   });
 }
 
