@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PinkCare PCOS Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <!-- Landing / Hero -->
+  <section id="landing" class="hero hero-landing">
+    <div class="container hero-wrap">
+      <div class="hero-left">
+        <div class="badge">♡ Girls' Health</div>
+        <h1 class="title">
+          PCOS is common — <span class="underline">don’t ignore the signs.</span>
+        </h1>
+        <p class="lead">
+          Many teens and young women aren’t aware of PCOS. Early awareness helps you act sooner.
+          Take this cute 2‑minute quiz to check your situation — then see healthy habits and nearby doctors.
+        </p>
+        <button id="start-btn" class="cta jumbo">Start Quiz</button>
+        <p class="disclaimer">Educational only — not medical advice.</p>
+      </div>
+
+      <div class="hero-right">
+        <div class="quiz-card">
+          <!-- Minimal cute decorations -->
+          <span class="box-deco top-right">🎀</span>
+          <span class="box-deco bottom-left">✨</span>
+
+          <div class="pill">irregular cycles?</div>
+          <div class="pill">acne / hair growth?</div>
+          <div class="pill">weight changes?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wave separator -->
+  <section class="wave-sep" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,72 C240,120 480,0 720,36 C960,72 1200,120 1440,60 L1440,120 L0,120 Z"></path>
+    </svg>
+  </section>
+
+  <!-- Features row -->
+  <section class="features" id="features">
+    <div class="feat">
+      <h3>2‑minute quiz</h3>
+      <p>Quickly check common PCOS signs in a friendly way.</p>
+    </div>
+    <div class="feat">
+      <h3>Healthy habits</h3>
+      <p>Simple tips you can start today—food, sleep, movement.</p>
+    </div>
+    <div class="feat">
+      <h3>Private & safe</h3>
+      <p>No sign‑in. Your answers stay on your device.</p>
+    </div>
+  </section>
+
+  <!-- Quiz Header (hidden until Start) -->
+  <section id="quiz-header" class="results hidden">
+    <div class="container">
+      <h2>Answer a few quick questions</h2>
+      <p class="tip">This is educational only and not a diagnosis.</p>
+    </div>
+  </section>
+
+  <!-- Quiz Section (hidden until Start) -->
+  <section id="quiz" class="results hidden">
+    <div class="container">
+      <div id="quiz-area"></div>
+      <div style="margin-top:12px; display:flex; gap:10px;">
+        <button id="prev-btn" class="choice-btn">Previous</button>
+        <button id="next-btn" class="cta">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results (hidden until quiz complete) -->
+  <section id="result" class="results hidden">
+    <div class="container">
+      <h2>Your Quiz Result</h2>
+      <p id="result-text">We’ll show your personalized guidance here.</p>
+      <div id="result-advice" style="margin-top:10px;"></div>
+    </div>
+  </section>
+
+  <!-- Find Nearby Doctors (hidden initially; revealed after results) -->
+ <section id="doctor-section" class="doctor hidden">
+  <div class="container">
+    <h2>Find Nearby Doctors</h2>
+    <div class="doctor-row" style="flex-wrap:wrap;gap:10px;">
+      <input id="city" type="text" placeholder="Enter city or pincode" />
+      <button id="find-btn" class="cta">Find Doctors</button>
+      <button id="loc-btn" class="cta" type="button">Use my location</button>
+    </div>
+
+    <div id="doctor-results" style="margin-top:12px;"></div>
+
+    
+  </div>
+</section>
+
+</body>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initPlaces"></script>
+
+</html>
