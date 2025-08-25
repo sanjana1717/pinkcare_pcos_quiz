@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sanjana1717.github.io/pinkcare_pcos_quiz/sitemap.xml
